@@ -20,12 +20,6 @@ class UserSeeder extends Seeder
             'password' => Hash::make('rootroot'), // Encrypting the password
         ]);
 
-        User::create([
-            'name' => 'admin',
-            'email' => 'admin@ad',
-            'usertype' => 'admin',
-            'password' => Hash::make('rootroot'), // Encrypting the password
-        ]);
         
 
                 // Create sample users with Faker

@@ -64,11 +64,18 @@ class ProfileController extends Controller
     public function show(){
         $users = User::simplePaginate(5);
         $waybills = Waybill::where('status', '!=', 'Delivered')
-                   ->orderBy('updated_at', 'asc')
-                   ->simplePaginate(10);
-        $totalWaybills = Waybill::count();
-        $activeWaybills = Waybill::where('status', '!=', 'Delivered')->count();
-        $logs = ActivityLog::simplePaginate(5);
+            ->with('consignee') // Prevents N+1 query issue
+            ->orderBy('updated_at', 'asc')
+            ->simplePaginate(10);
+
+        $waybillCounts = Waybill::selectRaw('COUNT(*) as total, SUM(CASE WHEN status != "Delivered" THEN 1 ELSE 0 END) as active')
+                            ->first();
+
+        $totalWaybills = $waybillCounts->total;
+        $activeWaybills = $waybillCounts->active;
+
+        //$logs = ActivityLog::simplePaginate(5);
+        $logs = ActivityLog::with(['user', 'waybill'])->simplePaginate(5);
 
         $user = auth()->user(); // Get the authenticated user
 
