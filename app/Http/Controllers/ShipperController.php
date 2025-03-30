@@ -20,7 +20,7 @@ class ShipperController extends Controller
         $shipper = Shipper::create([
             'name' => $request->name,
             'phone_number' => $request->phone_number,
-            'shipping_address' => $request->shipping_address,
+            'shipping_address' => $request->shipping_address, // March 30
             // You can also add other fields like phone_number if necessary
         ]);
 
@@ -30,7 +30,8 @@ class ShipperController extends Controller
             'newShipper' => [
                 'id' => $shipper->id,
                 'name' => $shipper->name,
-                'phone_number' => $shipper->phone_number,  // Return only necessary fields
+                'phone_number' => $shipper->phone_number, 
+                'shipping_address'=>$shipper->shipping_address // Return only necessary fields // March 30
             ]
         ]);
     }

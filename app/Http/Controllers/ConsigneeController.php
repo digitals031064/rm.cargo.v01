@@ -20,7 +20,7 @@ class ConsigneeController extends Controller
         $consignee = Consignee::create([
             'name' => $request->name,
             'phone_number' => $request->phone_number,
-            'billing_address' => $request->billing_address,
+            'billing_address' => $request->billing_address, // March 30
             // You can also add other fields like phone_number if necessary
         ]);
 
@@ -28,9 +28,10 @@ class ConsigneeController extends Controller
             'success' => true,
             'message'=> 'Consignee created successfully',
             'newConsignee' => [
-                'id' => $consignee->id,
-                'name' => $consignee->name,
-                'phone_number' => $consignee->phone_number,  // Return only necessary fields
+                'id' =>            $consignee->id,
+                'name' =>          $consignee->name,
+                'phone_number' =>  $consignee->phone_number, 
+                'billing_address'=>$consignee->billing_address // Return only necessary fields March 30
             ]
         ]);
     }
