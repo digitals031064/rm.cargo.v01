@@ -23,6 +23,7 @@ class ConsigneeSeeder extends Seeder
             Consignee::create([
                 'name' => $faker->unique()->company,
                 'phone_number' => $faker->numerify('09#########'), // Generates 11-digit random phone numbers
+                'billing_address' => $faker->address,
             ]);
         }
     }

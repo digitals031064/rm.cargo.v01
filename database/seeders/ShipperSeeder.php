@@ -22,6 +22,7 @@ class ShipperSeeder extends Seeder
             Shipper::create([
                 'name' => $faker->unique()->company,
                 'phone_number' => $faker->numerify('09#########'), // Generates 11-digit phone numbers
+                'shipping_address' => $faker->address, // Generates a random address
             ]);
         }
     }

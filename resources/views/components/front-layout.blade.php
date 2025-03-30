@@ -24,7 +24,7 @@
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Cargo Forwarder</span>
             </a>
             <div class="flex items-center space-x-6 rtl:space-x-reverse">
-                <a href="tel:5541251234" class="text-sm  text-black dark:text-white hover:underline">(555) 412-1234</a>
+                <a href="/login" class="text-sm  text-black dark:text-white hover:underline">Login</a>
             </div>
         </div>
       </nav>

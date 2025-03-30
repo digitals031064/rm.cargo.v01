@@ -145,7 +145,7 @@ class WaybillController extends Controller
        $consignees = Consignee::where('name', 'like', '%' . $search . '%')
                              ->orWhere('phone_number', 'like', '%' . $search . '%')
                              ->limit(10)
-                             ->get(['id', 'name', 'phone_number']);
+                             ->get(['id', 'name', 'phone_number','billing_address']);
 
        return response()->json($consignees);
    }
@@ -162,7 +162,7 @@ class WaybillController extends Controller
         $shippers = Shipper::where('name', 'like', '%' . $search . '%')
                               ->orWhere('phone_number', 'like', '%' . $search . '%')
                               ->limit(10)
-                              ->get(['id', 'name', 'phone_number']);
+                              ->get(['id', 'name', 'phone_number','shipping_address']);
 
         return response()->json($shippers);
     }

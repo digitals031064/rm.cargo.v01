@@ -13,12 +13,14 @@ class ShipperController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'phone_number' => 'nullable|string|max:255',
+            'shipping_address' => 'nullable|string|max:255',
         ]);
 
         // Create the new consignee
         $shipper = Shipper::create([
             'name' => $request->name,
             'phone_number' => $request->phone_number,
+            'shipping_address' => $request->shipping_address,
             // You can also add other fields like phone_number if necessary
         ]);
 
