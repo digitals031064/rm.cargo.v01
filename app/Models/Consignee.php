@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Consignee extends Model
 {
-    protected $fillable = ['name', 'phone_number'];
+    protected $fillable = ['name', 'phone_number','billing_address'];
 
     public function waybills()
     {

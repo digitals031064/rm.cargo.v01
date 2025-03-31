@@ -20,6 +20,8 @@ class UserSeeder extends Seeder
             'password' => Hash::make('rootroot'), // Encrypting the password
         ]);
 
+        
+
                 // Create sample users with Faker
         $faker = Faker::create();
 

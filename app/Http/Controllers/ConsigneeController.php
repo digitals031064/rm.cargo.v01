@@ -13,12 +13,14 @@ class ConsigneeController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'phone_number' => 'nullable|string|max:255',
+            'billing_address' => 'nullable|string|max:255',
         ]);
 
         // Create the new consignee
         $consignee = Consignee::create([
             'name' => $request->name,
             'phone_number' => $request->phone_number,
+            'billing_address' => $request->billing_address,
             // You can also add other fields like phone_number if necessary
         ]);
 

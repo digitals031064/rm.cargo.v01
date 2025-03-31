@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Shipper extends Model
 {
-    protected $fillable = ['name', 'phone_number'];
+    protected $fillable = ['name', 'phone_number','shipping_address'];
 
     public function waybills()
     {

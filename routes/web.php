@@ -26,7 +26,8 @@ Route::get('/about', function () {
     return view('about');
 });
 
-Route::get('/dashboard', [ProfileController::class, 'show'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [ProfileController::class, 'show'])
+    ->middleware(['auth', 'verified'])->name('dashboard');
 
 
 Route::post('/waybills', [WaybillController::class, 'store'])->middleware(['auth', 'verified'])->name('waybills.store');
