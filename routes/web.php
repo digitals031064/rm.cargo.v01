@@ -8,6 +8,7 @@ use App\Http\Controllers\ShipperController;
 use App\Http\Controllers\WaybillController;
 use App\Http\Controllers\ConsigneeController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\StaffAccountController;
 
 Route::get('/', function () {
     return view('index');
@@ -81,6 +82,7 @@ Route::get('/waybills/search', [WaybillController::class, 'search'])->name('wayb
 
 
 Route::get('admin/user-management', [ActivityLogController::class, 'index'])->middleware(['auth', 'verified'])->name('user-management');
+Route::post('admin/user-management', [StaffAccountController::class, 'store'])->name('staff-account.store');
 
     // Consignee autocomplete
 Route::get('/consignees/search', [WaybillController::class, 'searchConsignees']);
