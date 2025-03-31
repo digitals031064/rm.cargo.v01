@@ -21,11 +21,15 @@
                         {{ __('Waybills') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('user-management')" :active="request()->routeIs('user-management')">
-                        {{ __('User Management') }}
-                    </x-nav-link>
-                </div>
+                @auth
+                    @if (auth()->user()->usertype === 'admin')
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('user-management')" :active="request()->routeIs('user-management')">
+                            {{ __('User Management') }}
+                        </x-nav-link>
+                    </div>
+                    @endif
+                @endauth
             </div>
 
             <!-- Settings Dropdown -->

@@ -8,15 +8,15 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto mb-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white border border-gray-200 rounded-lg p-8 md:p-12">
+                <div class="bg-white  rounded-lg p-8 md:p-12">
                     <p class="text-lg font-normal text-gray-500 mb-4">Active Waybills</p>
-                    <h2 class="text-gray-900 text-3xl font-extrabold mb-2">10</h2>
+                    <h2 class="text-gray-900 text-3xl font-extrabold mb-2">{{$activeWaybills}}</h2>
                 </div>
-                <div class="bg-white border border-gray-200 rounded-lg p-8 md:p-12">
+                <div class="bg-white  rounded-lg p-8 md:p-12">
                     <p class="text-lg font-normal text-gray-500 mb-4">All Waybills</p>
-                    <h2 class="text-gray-900 text-3xl font-extrabold mb-2">20</h2>
+                    <h2 class="text-gray-900 text-3xl font-extrabold mb-2">{{$totalWaybills}}</h2>
                 </div>
-                <div class="bg-white border border-gray-200 rounded-lg p-8 md:p-12">
+                <div class="bg-white  rounded-lg p-8 md:p-12">
                     <p class="text-lg font-normal text-gray-500 mb-4">All Waybills</p>
                     <h2 class="text-gray-900 text-3xl font-extrabold mb-2">20</h2>
                     
@@ -62,7 +62,7 @@
                                         {{$waybill->status}}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <a href="{{route('waybills.edit', ['waybill' => $waybill])}}" class="font-medium text-blue-600 hover:underline">View</a>
+                                        <a href="#" class="font-medium text-blue-600 hover:underline">View</a>
                                     </td>
                                 </tr>
                                 

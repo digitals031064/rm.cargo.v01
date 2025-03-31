@@ -82,7 +82,7 @@ class ProfileController extends Controller
         if ($user->usertype === 'admin') {
             return view('admin.dashboard', compact('waybills','users', 'logs', 'totalWaybills', 'activeWaybills'));
         } else {
-            return view('dashboard', compact('waybills'));
+            return view('dashboard', compact('waybills', 'totalWaybills', 'activeWaybills'));
         }
     }
 }
