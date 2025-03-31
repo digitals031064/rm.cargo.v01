@@ -31,6 +31,7 @@ class ConsigneeController extends Controller
                 'id' => $consignee->id,
                 'name' => $consignee->name,
                 'phone_number' => $consignee->phone_number,  // Return only necessary fields
+                'billing_address'=>$consignee->billing_address
             ]
         ]);
     }

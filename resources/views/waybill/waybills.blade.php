@@ -292,14 +292,16 @@
                                     </div>
                                     <div>
                                         <label for="consignee_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Consignee #</label>
-                                        <input type="text" name="consignee_no" id="update_consignee_no" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Phone #" required="">
+                                        <input type="text" name="consignee_no" id="update_consignee_no" 
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                                            placeholder="Phone #" required="" disabled>
                                     </div>
 
                                     <div>
                                         <label for="billingAddress" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Billing Address</label>
                                         <input type="text" name="billingAddress" id="update_billing_address" 
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
-                                            placeholder="Billing Address" required="">
+                                            placeholder="Billing Address" required="" disabled>
                                     </div>                                     
                                 </div>
                                 <!--- Shipper -->
@@ -314,12 +316,14 @@
 
                                     <div>
                                         <label for="shipper_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shipper #</label>
-                                        <input type="text" name="shipper_no" id="update_shipper_no" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Phone #" required="">
+                                        <input type="text" name="shipper_no" id="update_shipper_no" 
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                                            placeholder="Phone #" required="" disabled>
                                     </div>
                                     <div>
                                         <label for="shippingAddress" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shipping Address</label>
                                         <input type="text" name="shippingAddress" id="update_shipping_address" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
-                                            placeholder="Shipping Address" required="">
+                                            placeholder="Shipping Address" required="" disabled>
                                     </div>                                    
                                 </div>
                                
@@ -379,14 +383,15 @@
             </div>
         </div>
 
-        <!-- Add New Consignee Form -->
+        <!-- Add New Shipper Form mod: March 30 shipping address and labels update-->
         <div id="addShipperForm" class="hidden fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50">
             <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
                 <h2 class="text-xl font-bold mb-4">Add New Shipper</h2>
-                <label for="shipperName" class="block text-sm font-semibold mb-2">Consignee Name</label>
+                <label for="shipperName" class="block text-sm font-semibold mb-2">Shipper Name</label>
                 <input type="text" id="shipperName" placeholder="Shipper Name" class="w-full p-2 mb-4 border border-gray-300 rounded" />
-                <label for="shipperPhone" class="block text-sm font-semibold mb-2">Consignee Phone</label>
-                <input type="text" id="shipperPhone" placeholder="Consignee Phone" class="w-full p-2 mb-4 border border-gray-300 rounded" />
+                <label for="shipperPhone" class="block text-sm font-semibold mb-2">Shipper Phone #</label>
+                <input type="text" id="shipperPhone" placeholder="Shipper Phone #" class="w-full p-2 mb-4 border border-gray-300 rounded" />
+                <label for="shippingAddress" class="block text-sm font-semibold mb-2">Shipping Address</label>
                 <input type="text" id="shippingAddress" placeholder="Shipping Address" class="w-full p-2 mb-4 border border-gray-300 rounded" />
                 <div class="flex justify-between">
                     <button id="submitShipper" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Submit</button>
@@ -867,7 +872,9 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('consignee_id').value = data.newConsignee.id;
             document.getElementById('add_consignee_id').value = data.newConsignee.id;
             document.getElementById('add_consignee_no').value = data.newConsignee.phone_number;
-
+            document.getElementById('update_consignee_no').value = data.newConsignee.phone_number;
+            document.getElementById('update_billing_address').value = data.newConsignee.billing_address; //March 30
+            document.getElementById('add_billing_address').value = data.newConsignee.billing_address; //March 30
             // Optionally, you can refresh the list of consignees or update the UI
                         // Remove the "Add New Consignee" div if it exists
             if (addNewItem) {
@@ -956,7 +963,8 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('add_shipper_id').value = data.newShipper.id;
             document.getElementById('update_shipper_no').value = data.newShipper.phone_number;
             document.getElementById('add_shipper_no').value = data.newShipper.phone_number;
-
+            document.getElementById('update_shipping_address').value = data.newShipper.shipping_address; //March 30
+            document.getElementById('add_shipping_address').value = data.newShipper.shipping_address; //March 30
 
             // Optionally, you can refresh the list of consignees or update the UI
                         // Remove the "Add New Shipper" div if it exists

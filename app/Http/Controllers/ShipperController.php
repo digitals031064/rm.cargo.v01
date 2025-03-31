@@ -31,6 +31,7 @@ class ShipperController extends Controller
                 'id' => $shipper->id,
                 'name' => $shipper->name,
                 'phone_number' => $shipper->phone_number,  // Return only necessary fields
+                'shipping_address'=>$shipper->shipping_address
             ]
         ]);
     }
