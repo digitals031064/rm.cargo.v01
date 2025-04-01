@@ -224,7 +224,7 @@
                         <div class="grid gap-4 mb-4 sm:grid-cols-3">
                             <div>
                                 <label for="cbm" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CBM</label>
-                                <input type="number" name="cbm" id="cbm" max="999999.99" step="0.01" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="CBM" required="">
+                                <input type="number" name="cbm" id="cbm" max="999.99999999" step="0.01" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="CBM" required="">
                             </div>
                             <div>
                                 <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
@@ -338,7 +338,7 @@
                             <div class="grid gap-4 mb-6 sm:grid-cols-3">
                                 <div>
                                     <label for="cbm" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CBM</label>
-                                    <input type="number" name="cbm" id="update_cbm" max="9999999.99" step="0.01" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="CBM" required="">
+                                    <input type="number" name="cbm" id="update_cbm" max="999.99999999" step="0.01" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="CBM" required="">
                                 </div>
                                 <div>
                                     <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
