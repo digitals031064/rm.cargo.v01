@@ -20,7 +20,7 @@
       <nav class="bg-white border-gray-200 dark:bg-gray-900">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
             <a href="https://flowbite.com" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWxxXeGlKFHR-5YtUkvLKl_mBhcOIA8ME8CA&s" class="h-8" alt="Flowbite Logo" />
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_UkaqTxfnwaSBYrABaoEdnQI-EuZHoUSA9w&s" class="h-8" alt="Flowbite Logo" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Cargo Forwarder</span>
             </a>
             <div class="flex items-center space-x-6 rtl:space-x-reverse">
