@@ -31,8 +31,8 @@ class WaybillController extends Controller
             'consignee_id' => 'required|integer|exists:consignees,id',
             'shipper_id' => 'required|integer|exists:shippers,id',
             'shipment' => 'required',
-            'cbm' => 'required|numeric|min:0',
-            'price' => 'required|numeric|max:999999.99',
+            'cbm' => 'nullable|numeric|min:0',
+            'price' => 'nullable|numeric|max:999999.99',
             'status' => 'required',
         ]);
         $data['user_id'] = auth()->id();

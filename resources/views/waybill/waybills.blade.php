@@ -224,11 +224,11 @@
                         <div class="grid gap-4 mb-4 sm:grid-cols-3">
                             <div>
                                 <label for="cbm" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CBM</label>
-                                <input type="number" name="cbm" id="cbm" max="999.99999999" step="0.01" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="CBM" required="">
+                                <input type="number" name="cbm" id="cbm" max="999999.99" step="0.01" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="CBM">
                             </div>
                             <div>
                                 <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                                <input type="number" name="price" id="price" max="999999.99" step="0.01" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="PHP" required="">
+                                <input type="number" name="price" id="price" max="999999.99" step="0.01" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="PHP">
                             </div>
                             <div>
                                 <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
@@ -338,7 +338,7 @@
                             <div class="grid gap-4 mb-6 sm:grid-cols-3">
                                 <div>
                                     <label for="cbm" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CBM</label>
-                                    <input type="number" name="cbm" id="update_cbm" max="999.99999999" step="0.01" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="CBM" required="">
+                                    <input type="number" name="cbm" id="update_cbm" max="9999999.99" step="0.01" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="CBM" required="">
                                 </div>
                                 <div>
                                     <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
@@ -719,7 +719,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
     });//consigneeNameField
 
-    // Search consignees - used by consigneeNameField keyup event
+    // Search consignees - used by consigneeNameField keyup event; Update Waybill Modal
     function searchConsignees() {
         const query = consigneeNameField.value.trim();
 
@@ -747,7 +747,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             consigneeIdField.value = consignee.id;
                             consigneeNoField.value = consignee.phone_number;
                             consigneeBillingAddress.value=consignee.billing_address;
-
+                            document.getElementById('update_billing_address').value=consignee.billing_address;
                             consigneeList.classList.add('hidden');
                         });
 
@@ -999,6 +999,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function searchShippers() {
             const query = shipperNameField.value;
+            const shippingAddress=document.getElementById('update_shipping_address');
+
             fetch(`/shippers/search?query=${query}`)
                 .then(response => response.json())
                 .then(data => {
@@ -1009,10 +1011,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             item.classList.add('p-2', 'hover:bg-gray-100', 'cursor-pointer');
                             item.textContent = `${shipper.name} (${shipper.phone_number})`;
                             
+                            //When user clicks from list - update Modal Form
                             item.addEventListener('click', function() {
                                 shipperNameField.value = shipper.name;
                                 shipperIdField.value = shipper.id;
                                 shipperNoField.value = shipper.phone_number;
+                                shippingAddress.value=shipper.shipping_address;
                                 shipperList.classList.add('hidden');
                             });
                             
