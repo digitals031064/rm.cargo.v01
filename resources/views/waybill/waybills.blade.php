@@ -719,7 +719,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
     });//consigneeNameField
 
-    // Search consignees - used by consigneeNameField keyup event
+    // Search consignees - used by consigneeNameField keyup event; Update Waybill Modal
     function searchConsignees() {
         const query = consigneeNameField.value.trim();
 
@@ -747,7 +747,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             consigneeIdField.value = consignee.id;
                             consigneeNoField.value = consignee.phone_number;
                             consigneeBillingAddress.value=consignee.billing_address;
-
+                            document.getElementById('update_billing_address').value=consignee.billing_address;
                             consigneeList.classList.add('hidden');
                         });
 
@@ -999,6 +999,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function searchShippers() {
             const query = shipperNameField.value;
+            const shippingAddress=document.getElementById('update_shipping_address');
+
             fetch(`/shippers/search?query=${query}`)
                 .then(response => response.json())
                 .then(data => {
@@ -1009,10 +1011,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             item.classList.add('p-2', 'hover:bg-gray-100', 'cursor-pointer');
                             item.textContent = `${shipper.name} (${shipper.phone_number})`;
                             
+                            //When user clicks from list - update Modal Form
                             item.addEventListener('click', function() {
                                 shipperNameField.value = shipper.name;
                                 shipperIdField.value = shipper.id;
                                 shipperNoField.value = shipper.phone_number;
+                                shippingAddress.value=shipper.shipping_address;
                                 shipperList.classList.add('hidden');
                             });
                             
