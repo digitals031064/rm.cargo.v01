@@ -32,6 +32,8 @@ class WaybillController extends Controller
             'shipper_id' => 'required|integer|exists:shippers,id',
             'shipment' => 'required',
             'cbm' => 'nullable|numeric|min:0',
+            'weight' => 'nullable|numeric|min:0',
+            'declared_value' => 'nullable|numeric|max:999999.99',
             'price' => 'nullable|numeric|max:999999.99',
             'status' => 'required',
         ]);
@@ -53,6 +55,8 @@ class WaybillController extends Controller
                     'shipper_phone' => $waybill->shipper->phone_number,
                     'shipment' => $waybill->shipment,
                     'cbm' => $waybill->cbm,
+                    'weight' => $waybill->weight,
+                    'declared_value' => $waybill->declared_value,
                     'price' => $waybill->price,
                     'status' => $waybill->status,
                     'user_id' => $waybill->user_id
@@ -98,8 +102,10 @@ class WaybillController extends Controller
             'consignee_id' => 'required|integer|exists:consignees,id',
             'shipper_id' => 'required|integer|exists:shippers,id',
             'shipment' => 'required',
-            'cbm' => 'required|numeric|min:0',
-            'price' => 'required|numeric|max:999999.99',
+            'cbm' => 'nullable|numeric|min:0',
+            'weight' => 'nullable|numeric|min:0',
+            'declared_value' => 'nullable|numeric|max:999999.99',
+            'price' => 'nullable|numeric|max:999999.99',
             'status' => 'required',
         ]);
 

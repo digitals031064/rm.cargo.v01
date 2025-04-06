@@ -18,6 +18,8 @@ class Waybill extends Model
         'shipment',
         'price',
         'cbm',
+        'weight',
+        'declared_value',
         'status'
     ];
 

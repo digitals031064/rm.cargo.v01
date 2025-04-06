@@ -112,6 +112,8 @@
                                     data-shipping_address="{{$waybill->shipper->shipping_address}}"
                                     data-shipment="{{$waybill->shipment}}"
                                     data-cbm="{{$waybill->cbm}}"
+                                    data-weight="{{$waybill->weight}}"
+                                    data-declared_value="{{$waybill->declared_value}}"
                                     data-price="{{$waybill->price}}"
                                     data-status="{{$waybill->status}}"
                                     class="waybill-row border-b dark:border-gray-700 {{ $loop->first ? 'highlight' : '' }}"
@@ -163,7 +165,7 @@
                     </div>
                     <!-- Modal body -->
                     <!--<form id="addWaybilLForm" method="POST" action="{{ route('waybills.store') }}"> -->
-                    <form id="addWaybilLForm" name="addWaybilLForm">
+                    <form id="addWaybilLForm" name="addWaybilLForm" class="waybill-form">
                         @csrf
                         @method('POST')
                         <!-- Waybill -->
@@ -220,15 +222,24 @@
                             <label for="shipment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shipment</label>
                             <input type="text" name="shipment" id="shipment" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Shipment" required="">
                         </div>
-
                         <div class="grid gap-4 mb-4 sm:grid-cols-3">
                             <div>
                                 <label for="cbm" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CBM</label>
-                                <input type="number" name="cbm" id="cbm" max="999999.99" step="0.01" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="CBM">
+                                <input type="number" name="cbm" id="cbm" max="999999.99" step="any" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cbm" placeholder="CBM">
                             </div>
                             <div>
+                                <label for="weight" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Weight</label>
+                                <input type="number" name="weight" id="weight" max="999999.99" step="0.01" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 weight" placeholder="Weight">
+                            </div>
+                            <div>
+                                <label for="declared_value" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Declared Value</label>
+                                <input type="number" name="declared_value" id="declared_value" max="999999.99" step="0.01" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 declared" placeholder="PHP">
+                            </div>
+                        </div>
+                        <div class="grid gap-4 mb-4 sm:grid-cols-3">
+                            <div>
                                 <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                                <input type="number" name="price" id="price" max="999999.99" step="0.01" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="PHP">
+                                <input type="number" name="price" id="price" max="999999.99" step="0.01" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 price" placeholder="PHP">
                             </div>
                             <div>
                                 <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
@@ -269,7 +280,7 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <form id="updateModalForm" name="updateModalForm">
+                    <form id="updateModalForm" name="updateModalForm" class="waybill-form">
                         @csrf
                         @method('POST')
                         <input type="hidden" name="_method" value="PUT">
@@ -335,14 +346,24 @@
                                 <input type="text" name="shipment" id="update_shipment" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Shipment" required="">
                             </div>
                             <!--- Shipment Details -->
-                            <div class="grid gap-4 mb-6 sm:grid-cols-3">
+                            <div class="grid gap-4 mb-4 sm:grid-cols-3">
                                 <div>
                                     <label for="cbm" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CBM</label>
-                                    <input type="number" name="cbm" id="update_cbm" max="9999999.99" step="0.01" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="CBM" required="">
+                                    <input type="number" name="cbm" id="update_cbm" max="999999.99" step="any" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cbm" placeholder="CBM">
                                 </div>
                                 <div>
+                                    <label for="weight" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Weight</label>
+                                    <input type="number" name="weight" id="update_weight" max="999999.99" step="0.01" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 weight" placeholder="Weight">
+                                </div>
+                                <div>
+                                    <label for="declared value" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Declared Value</label>
+                                    <input type="number" name="declared value" id="update_declared_value" max="999999.99" step="0.01" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 declared" placeholder="Declared Value">
+                                </div>
+                            </div>
+                            <div class="grid gap-4 mb-6 sm:grid-cols-3">
+                                <div>
                                     <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                                    <input type="number" name="price" id="update_price" max="999999.99" step="0.01" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="PHP" required="">
+                                    <input type="number" name="price" id="update_price" max="999999.99" step="0.01" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 price" placeholder="PHP">
                                 </div>    
                                 <div>
                                     <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
@@ -483,6 +504,8 @@ document.addEventListener('DOMContentLoaded', function() {
         newRow.setAttribute("data-shipper_phone", waybill.shipper_phone);
         newRow.setAttribute("data-shipment", waybill.shipment);
         newRow.setAttribute("data-cbm", waybill.cbm);
+        newRow.setAttribute("data-weight", waybill.weight);
+        newRow.setAttribute("data-declared_value", waybill.declared_value);
         newRow.setAttribute("data-price", waybill.price);
         newRow.setAttribute("data-status", waybill.status);
 
@@ -544,6 +567,8 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('update_shipping_address').value = row.dataset.shipping_address;
             document.getElementById('update_shipment').value = row.dataset.shipment;
             document.getElementById('update_cbm').value = row.dataset.cbm;
+            document.getElementById('update_weight').value = row.dataset.weight;
+            document.getElementById('update_declared_value').value = row.dataset.declared_value;
             document.getElementById('update_price').value = row.dataset.price;
             document.getElementById('update_status').value = row.dataset.status;
 
@@ -600,6 +625,8 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('update_shipping_address').value = row.dataset.shipping_address; //march 29
             document.getElementById('update_shipment').value = row.dataset.shipment;
             document.getElementById('update_cbm').value = row.dataset.cbm;
+            document.getElementById('update_weight').value = row.dataset.weight;
+            document.getElementById('update_declared_value').value = row.dataset.declared_value;
             document.getElementById('update_price').value = row.dataset.price;
             document.getElementById('update_status').value = row.dataset.status;
 
@@ -676,6 +703,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <strong>Status:</strong> ${this.dataset.status} <br>
                     <strong>Price:</strong> ${this.dataset.price} <br>
                     <strong>CBM:</strong> ${this.dataset.cbm} <br>
+                    <strong>weight:</strong> ${this.dataset.weight} <br>
+                    <strong>declared value:</strong> ${this.dataset.declared_value} <br>
                     <strong>Shipper:</strong> ${this.dataset.shipper_id} ${this.dataset.shipper_name} ${this.dataset.shipping_address} (${this.dataset.shipper_phone}) <br>
                     <strong>Consignee:</strong> ${this.dataset.consignee_id} ${this.dataset.consignee_name} ${this.dataset.billing_address} (${this.dataset.consignee_phone})
                 `;
@@ -1223,9 +1252,36 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mouse up - Stop dragging
     document.addEventListener('mouseup', () => {
         isDragging = false;
-    });        
+    });    
+    
+     document.querySelectorAll('.waybill-form').forEach(form => {
+    const cbmInput = form.querySelector('.cbm');
+    const weightInput = form.querySelector('.weight');
+    const declaredInput = form.querySelector('.declared');
+    const priceInput = form.querySelector('.price');
 
+    function computePrice() {
+      const cbm = parseFloat(cbmInput.value);
+      const weight = parseFloat(weightInput.value);
+      const declared = parseFloat(declaredInput.value);
 
+      if (cbm > 0 && weight > 0 && declared > 0) {
+        const formula1 = cbm * 3360;
+        const formula2 = weight * 10;
+        const formula3 = declared * 0.08;
+        const finalPrice = Math.max(formula1, formula2, formula3);
+        priceInput.value = finalPrice.toFixed(2);
+      } else {
+        priceInput.value = '';
+      }
+    }
+
+    [cbmInput, weightInput, declaredInput].forEach(input => {
+      input.addEventListener('input', computePrice);
+    });
+  });
+
+    
 
 });
 </script>

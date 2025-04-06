@@ -18,8 +18,10 @@ return new class extends Migration
             $table->foreignId('shipper_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('shipment');
-            $table->decimal('cbm')->nullable();
-            $table->decimal('price', 12, 2);
+            $table->decimal('cbm', 12, 6)->nullable();
+            $table->decimal('weight')->nullable();
+            $table->decimal('declared_value', 12, 2)->nullable();
+            $table->decimal('price', 12, 2)->nullable();
             $table->string('status');
             $table->timestamps();
         });
