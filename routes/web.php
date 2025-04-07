@@ -8,7 +8,11 @@ use App\Http\Controllers\ShipperController;
 use App\Http\Controllers\WaybillController;
 use App\Http\Controllers\ConsigneeController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\smstestController;
 use App\Http\Controllers\StaffAccountController;
+use Vonage\Client;
+use Vonage\Client\Credentials\Basic;
+use Vonage\SMS\Message\SMS;
 
 Route::get('/', function () {
     return view('index');
@@ -93,6 +97,40 @@ Route::get('/shippers/search', [WaybillController::class, 'searchShippers']);
 Route::post('/consignees/add', [ConsigneeController::class, 'create']);
 Route::post('/shippers/add', [ShipperController::class, 'create']);
 
+
+//testing sms api
+Route::get('/test-sms', function () {
+    $to = '+639173194129'; // Replace this with your phone number
+    $messageText = "🚚 Test SMS from your Laravel app using Vonage!";
+
+    try {
+        $credentials = new Basic(config('services.vonage.key'), config('services.vonage.secret'));
+
+        // 🔥 Disable SSL verification
+        $client = new Client($credentials, [
+            'http_client_options' => [
+                'verify' => false
+            ]
+        ]);
+
+        $message = new SMS($to, config('services.vonage.sms_from'), $messageText);
+        $client->sms()->send($message);
+
+        return response()->json(['message' => '✅ SMS sent!']);
+    } catch (\Exception $e) {
+        \Log::error('Vonage Test SMS failed: ' . $e->getMessage());
+        return response()->json([
+            'error' => '❌ SMS failed',
+            'details' => $e->getMessage()
+        ], 500);
+    }
+});
+
+Route::get('/sms', [smstestController::class, 'sms']);
+
+Route::get('/phpinfo', function() {
+    return phpinfo();
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

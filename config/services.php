@@ -35,4 +35,17 @@ return [
         ],
     ],
 
+    'infobip' => [
+    'base_url' => env('INFOBIP_BASE_URL'),
+    'api_key' => env('INFOBIP_API_KEY'),
+],
+
+'vonage' => [
+    'key' => env('VONAGE_KEY'),
+    'secret' => env('VONAGE_SECRET'),
+    'sms_from' => env('VONAGE_FROM'),
+],
+
+
+
 ];
