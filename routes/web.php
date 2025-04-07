@@ -33,6 +33,7 @@ Route::get('/about', function () {
 Route::get('/dashboard', [ProfileController::class, 'show'])
     ->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::patch('/dashboard/{waybill}/status', [ProfileController::class, 'updateStatus'])->name('waybills.updateStatus');
 
 Route::post('/waybills', [WaybillController::class, 'store'])->middleware(['auth', 'verified'])->name('waybills.store');
 Route::get('/waybills/{waybill}/edit', [WaybillController::class, 'edit'])->middleware(['auth', 'verified'])->name('waybills.edit');

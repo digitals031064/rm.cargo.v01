@@ -66,7 +66,7 @@ class ProfileController extends Controller
         $waybills = Waybill::where('status', '!=', 'Delivered')
             ->with('consignee') // Prevents N+1 query issue
             ->orderBy('updated_at', 'asc')
-            ->simplePaginate(10);
+            ->simplePaginate(5);
 
         $waybillCounts = Waybill::selectRaw('COUNT(*) as total, SUM(CASE WHEN status != "Delivered" THEN 1 ELSE 0 END) as active')
                             ->first();
@@ -84,5 +84,17 @@ class ProfileController extends Controller
         } else {
             return view('dashboard', compact('waybills', 'totalWaybills', 'activeWaybills'));
         }
+    }
+
+    public function updateStatus(Request $request, Waybill $waybill){
+
+        $request->validate([
+            'status' => 'required|string|in:Pending,Arrived in Van Yard,Arrived at Port of Origin,Departed from Port of Origin,Arrived at Port of Destination,Delivered',
+        ]);
+
+        $waybill->status = $request->status;
+        $waybill->save();
+
+        return back()->with('success', 'Waybill status updated successfully.');
     }
 }
