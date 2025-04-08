@@ -17,8 +17,8 @@
                     <h2 class="text-gray-900 text-3xl font-extrabold mb-2">{{$totalWaybills}}</h2>
                 </div>
                 <div class="bg-white  rounded-lg p-8 md:p-12">
-                    <p class="text-lg font-normal text-gray-500 mb-4">All Waybills</p>
-                    <h2 class="text-gray-900 text-3xl font-extrabold mb-2">20</h2>
+                    <p class="text-lg font-normal text-gray-500 mb-4">Delivered Waybills</p>
+                    <h2 class="text-gray-900 text-3xl font-extrabold mb-2">{{$deliveredWaybills}}</h2>
                     
                 </div>
             </div>

@@ -73,6 +73,7 @@ class ProfileController extends Controller
 
         $totalWaybills = $waybillCounts->total;
         $activeWaybills = $waybillCounts->active;
+        $deliveredWaybills = Waybill::where('status', 'Delivered')->count();
 
         //$logs = ActivityLog::simplePaginate(5);
         $logs = ActivityLog::with(['user', 'waybill'])->latest()->simplePaginate(5);
@@ -80,9 +81,9 @@ class ProfileController extends Controller
         $user = auth()->user(); // Get the authenticated user
 
         if ($user->usertype === 'admin') {
-            return view('admin.dashboard', compact('waybills','users', 'logs', 'totalWaybills', 'activeWaybills'));
+            return view('admin.dashboard', compact('waybills','users', 'logs', 'totalWaybills', 'activeWaybills', 'deliveredWaybills'));
         } else {
-            return view('dashboard', compact('waybills', 'totalWaybills', 'activeWaybills'));
+            return view('dashboard', compact('waybills', 'totalWaybills', 'activeWaybills', 'deliveredWaybills'));
         }
     }
 
