@@ -76,7 +76,7 @@ class Waybill extends Model
     protected static function sendSMS($waybill)
     {
         $to = '+639173194129'; // Replace with actual recipient number
-        $messageText = "Waybill #{$waybill->waybill_no} has now {$waybill->status}.";
+        $messageText = "Waybill #{$waybill->waybill_no} has now {$waybill->status}. Track your cargo@rmcargo.com";
 
         $basic  = new Basic(config('services.vonage.key'), config('services.vonage.secret'));
         $client = new Client($basic);

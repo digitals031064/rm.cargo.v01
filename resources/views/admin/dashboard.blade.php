@@ -101,9 +101,6 @@
                                     <th scope="col" class="px-6 py-3">
                                         Role
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Action
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -117,9 +114,6 @@
                                     </td>
                                     <th scope="col" class="px-6 py-3">
                                         {{$user->usertype}}
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        <a href="" class="font-medium text-blue-600 hover:underline">View</a>
                                     </th>
                                 </tr>
                                 
@@ -143,9 +137,6 @@
                                     <th scope="col" class="px-6 py-3">
                                         Waybill
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        View
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -160,9 +151,7 @@
                                     <th scope="col" class="px-6 py-3">
                                         {{$log->waybill->waybill_no}}
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        <a href="" class="font-medium text-blue-600 hover:underline">View</a>
-                                    </th>
+
                                 </tr>
                                 
                                 @endforeach

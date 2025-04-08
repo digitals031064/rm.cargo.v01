@@ -75,7 +75,7 @@ class ProfileController extends Controller
         $activeWaybills = $waybillCounts->active;
 
         //$logs = ActivityLog::simplePaginate(5);
-        $logs = ActivityLog::with(['user', 'waybill'])->simplePaginate(5);
+        $logs = ActivityLog::with(['user', 'waybill'])->latest()->simplePaginate(5);
 
         $user = auth()->user(); // Get the authenticated user
 
