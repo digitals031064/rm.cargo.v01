@@ -27,7 +27,7 @@ class WaybillController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'waybill_no' => 'required|unique:waybills,waybill_no',
+            
             'consignee_id' => 'required|integer|exists:consignees,id',
             'shipper_id' => 'required|integer|exists:shippers,id',
             'shipment' => 'required',
@@ -90,7 +90,15 @@ class WaybillController extends Controller
         return response()->json($waybill);
     }
  
+    public function getNextWaybillNo() {
+        $last = DB::table('waybills')
+            ->orderByDesc(DB::raw('CAST(waybill_no AS UNSIGNED)'))
+            ->value('waybill_no');
 
+        $next = $last ? ((int) $last) + 1 : 100000;
+
+        return response()->json(['next_waybill_no' => (string) $next]);
+    }
 
     public function update(Waybill $waybill, Request $request){
         //dd($request);

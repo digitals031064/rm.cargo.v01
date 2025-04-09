@@ -171,7 +171,7 @@
                         <!-- Waybill -->
                         <div>
                                 <label for="waybill_no" class="form-field block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waybill Number</label>
-                                <input  type="text" name="waybill_no" id="waybill_no" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Waybill Number" required=""> 
+                                <input  type="text" name="waybill_no" id="waybill_no" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Waybill Number" readonly> 
                         </div>
                         <div class="grid gap-4 mb-4 sm:grid-cols-2">
                             <!-- Consignee --> 

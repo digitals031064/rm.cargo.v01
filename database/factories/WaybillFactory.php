@@ -18,7 +18,6 @@ class WaybillFactory extends Factory
     public function definition(): array
     {
         return [
-            'waybill_no' => strtoupper(Str::random(10)),
             'consignee_id' => $this->faker->numberBetween(1, 10),
             'shipper_id' => $this->faker->numberBetween(1, 10),
             'shipment' => $this->faker->word . ' - ' . $this->faker->word,

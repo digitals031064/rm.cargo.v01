@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ActivityLog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,6 +39,19 @@ class Waybill extends Model
     protected static function boot()
     {
         parent::boot();
+
+        static::creating(function ($waybill) {
+            if (empty($waybill->waybill_no)) {
+                // Get the highest existing waybill number (as integer)
+                $last = Waybill::orderByDesc(DB::raw('CAST(waybill_no AS UNSIGNED)'))
+                               ->value('waybill_no');
+    
+                // Set starting number if none found
+                $next = $last ? ((int) $last) + 1 : 100000;
+    
+                $waybill->waybill_no = (string) $next;
+            }
+        });
 
         // Log creation event
         static::created(function ($waybill) {
