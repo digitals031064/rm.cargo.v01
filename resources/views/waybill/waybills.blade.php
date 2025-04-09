@@ -169,9 +169,10 @@
                         @csrf
                         @method('POST')
                         <!-- Waybill -->
-                        <div>
-                                <label for="waybill_no" class="form-field block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waybill Number</label>
-                                <input  type="text" name="waybill_no" id="waybill_no" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Waybill Number" readonly> 
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-500 dark:text-white">
+                                Waybill No: <span id="preview-waybill-no" class="font-semibold text-xl">Loading...</span>
+                            </p>
                         </div>
                         <div class="grid gap-4 mb-4 sm:grid-cols-2">
                             <!-- Consignee --> 
@@ -1281,7 +1282,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-    
+  const modalButton = document.getElementById('createWaybillModalButton');
+        const previewSpan = document.getElementById('preview-waybill-no');
+
+        modalButton.addEventListener('click', function () {
+            console.log("Modal button clicked"); // 🔍 Debug
+
+            previewSpan.textContent = 'Loading...';
+
+            fetch('/waybills/next-number')
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Fetched data:", data); // 🔍 Debug
+                    previewSpan.textContent = data.next_waybill_no;
+                })
+                .catch(error => {
+                    console.error("Error fetching next number:", error);
+                    previewSpan.textContent = 'Error';
+                });
+        });
 
 });
 </script>
