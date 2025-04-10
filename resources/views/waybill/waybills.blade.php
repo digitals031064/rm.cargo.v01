@@ -87,14 +87,16 @@
                     </div>
                     <div class="overflow-x-auto">
                     @if($waybills->total() > 0)  {{-- Check if any results exist --}}
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-separate border-spacing-0">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-separate border-spacing-0" id="wb-table">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="px-4 py-4">Waybill Number</th>
-                                    <th scope="col" class="px-4 py-3">Consignee</th>
-                                    <th scope="col" class="px-4 py-3">Price</th>
-                                    <th scope="col" class="px-4 py-3">Status</th>
-                                    <th scope="col" class="px-4 py-3">Action</th>
+                                    <th scope="col" class="px-4 py-4">
+                                            Waybill Number
+                                    </th>
+                                    <th scope="col" class="px-4 py-3">Consignee<span class="inline-block ml-1">⇅</span></th>
+                                    <th scope="col" class="px-4 py-3">Price<span class="inline-block ml-1">⇅</span></th>
+                                    <th scope="col" class="px-4 py-3">Status<span class="inline-block ml-1">⇅</span></th>
+                                    <th scope="col" class="px-4 py-3">Action<span class="inline-block ml-1">⇅</span></th>
                                 </tr>
                             </thead>
                             <tbody id="waybill-table">
@@ -118,7 +120,7 @@
                                     data-status="{{$waybill->status}}"
                                     class="waybill-row border-b dark:border-gray-700 {{ $loop->first ? 'highlight' : '' }}"
                                 >
-                                    <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$waybill->waybill_no}}</th>
+                                    <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$waybill->waybill_no}}</th>
                                     <td class="px-4 py-3">{{$waybill->consignee->name}}</td>
                                     <td class="px-4 py-3">PHP{{$waybill->price}}</td>
                                     <td class="px-4 py-3">{{$waybill->status}}</td>
@@ -169,10 +171,24 @@
                         @csrf
                         @method('POST')
                         <!-- Waybill -->
-                        <div class="mb-4">
-                            <p class="text-sm text-gray-500 dark:text-white">
-                                Waybill No: <span id="preview-waybill-no" class="font-semibold text-xl">Loading...</span>
-                            </p>
+                        <div class="grid gap-4 mb-4 sm:grid-cols-3">
+                            <div>
+                                <div class="mb-2"></div>
+                                <p class="text-sm text-gray-500 dark:text-white p-4">
+                                    Waybill No: <span id="preview-waybill-no" class="font-semibold text-xl">Loading...</span>
+                                </p>
+                            </div>
+                            <div>
+                                <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waybill Type</label>
+                                <select name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+                                    <option value="domestic">Domestic</option>
+                                    <option value="international">International</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="van_number" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Van Number</label>
+                                <input type="text" name="van_number" id="van_number" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Van Number">
+                            </div>
                         </div>
                         <div class="grid gap-4 mb-4 sm:grid-cols-2">
                             <!-- Consignee --> 
@@ -244,7 +260,7 @@
                             </div>
                             <div>
                                 <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
-                                <select name="status" id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+                                <select name="status" id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     @foreach($statuses as $status)
                                         <option value="{{ $status }}" {{ $waybill->status == $status ? 'selected' : '' }}>
                                             {{ $status }}
@@ -1282,25 +1298,67 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  const modalButton = document.getElementById('createWaybillModalButton');
-        const previewSpan = document.getElementById('preview-waybill-no');
+    const modalButton = document.getElementById('createWaybillModalButton');
+    const previewSpan = document.getElementById('preview-waybill-no');
 
-        modalButton.addEventListener('click', function () {
-            console.log("Modal button clicked"); // 🔍 Debug
+    modalButton.addEventListener('click', function () {
+        console.log("Modal button clicked"); // 🔍 Debug
 
-            previewSpan.textContent = 'Loading...';
+        previewSpan.textContent = 'Loading...';
 
-            fetch('/waybills/next-number')
-                .then(res => res.json())
-                .then(data => {
-                    console.log("Fetched data:", data); // 🔍 Debug
-                    previewSpan.textContent = data.next_waybill_no;
-                })
-                .catch(error => {
-                    console.error("Error fetching next number:", error);
-                    previewSpan.textContent = 'Error';
-                });
+        fetch('/waybills/next-number')
+            .then(res => res.json())
+            .then(data => {
+                console.log("Fetched data:", data); // 🔍 Debug
+                previewSpan.textContent = data.next_waybill_no;
+            })
+             .catch(error => {
+                console.error("Error fetching next number:", error);
+                previewSpan.textContent = 'Error';
+            });
         });
+
+        const table = document.getElementById("wb-table");
+    if (!table) return;
+
+    const headers = table.querySelectorAll("thead th");
+    let sortDirection = 1; // 1 = asc, -1 = desc
+    let currentSortedColumn = null;
+
+    headers.forEach((header, columnIndex) => {
+        header.style.cursor = "pointer";
+        header.addEventListener("click", () => {
+            const tbody = table.querySelector("tbody");
+            const rowsArray = Array.from(tbody.querySelectorAll("tr"));
+
+            // Toggle sort direction if same column
+            if (currentSortedColumn === columnIndex) {
+                sortDirection *= -1;
+            } else {
+                sortDirection = 1;
+                currentSortedColumn = columnIndex;
+            }
+
+            rowsArray.sort((a, b) => {
+                const aText = a.children[columnIndex].textContent.trim();
+                const bText = b.children[columnIndex].textContent.trim();
+
+                // Numeric sort if both values are numbers
+                const aNum = parseFloat(aText.replace(/[^0-9.-]+/g, ""));
+                const bNum = parseFloat(bText.replace(/[^0-9.-]+/g, ""));
+                const isNumeric = !isNaN(aNum) && !isNaN(bNum);
+
+                if (isNumeric) {
+                    return (aNum - bNum) * sortDirection;
+                } else {
+                    return aText.localeCompare(bText) * sortDirection;
+                }
+            });
+
+            // Re-append rows in sorted order
+            rowsArray.forEach(row => tbody.appendChild(row));
+        });
+    });
 
 });
 </script>

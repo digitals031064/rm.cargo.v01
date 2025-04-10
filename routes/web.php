@@ -72,7 +72,7 @@ Route::get('/waybill/waybills', function () {
         });
     }
 
-    $waybills = $query->paginate(10);
+    $waybills = $query->paginate(15);
 
     // If no waybills found, set a session message but still return the view
     if ($waybills->isEmpty() && !empty($search)) {
