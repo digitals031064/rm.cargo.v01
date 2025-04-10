@@ -104,8 +104,8 @@
                                 <tr                                             
                                     data-id="{{$waybill->id}}"
                                     data-waybill_no="{{$waybill->waybill_no}}"
-                                    data-waybill_no="{{$waybill->type}}"
-                                    data-waybill_no="{{$waybill->van_no}}"
+                                    data-type="{{$waybill->type}}"
+                                    data-van_no="{{$waybill->van_no}}"
                                     data-consignee_id="{{$waybill->consignee->id}}"
                                     data-consignee_name="{{$waybill->consignee->name}}"
                                     data-consignee_phone="{{$waybill->consignee->phone_number}}"
@@ -313,8 +313,8 @@
                                 <div>
                                     <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waybill Type</label>
                                     <select name="type" id="update_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
-                                        <option value="domestic">Domestic</option>
-                                        <option value="international">International</option>
+                                        <option value="default">Default</option>
+                                        <option value="cebu">Cebu</option>
                                     </select>
                                 </div>
                                 <div>
