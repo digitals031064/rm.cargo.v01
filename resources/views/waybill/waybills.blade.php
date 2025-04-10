@@ -104,6 +104,8 @@
                                 <tr                                             
                                     data-id="{{$waybill->id}}"
                                     data-waybill_no="{{$waybill->waybill_no}}"
+                                    data-waybill_no="{{$waybill->type}}"
+                                    data-waybill_no="{{$waybill->van_no}}"
                                     data-consignee_id="{{$waybill->consignee->id}}"
                                     data-consignee_name="{{$waybill->consignee->name}}"
                                     data-consignee_phone="{{$waybill->consignee->phone_number}}"
@@ -181,13 +183,13 @@
                             <div>
                                 <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waybill Type</label>
                                 <select name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
-                                    <option value="domestic">Domestic</option>
-                                    <option value="international">International</option>
+                                    <option value="default">Default</option>
+                                    <option value="cebu">Cebu</option>
                                 </select>
                             </div>
                             <div>
-                                <label for="van_number" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Van Number</label>
-                                <input type="text" name="van_number" id="van_number" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Van Number">
+                                <label for="van_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Van Number</label>
+                                <input type="text" name="van_no" id="van_no" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Van Number">
                             </div>
                         </div>
                         <div class="grid gap-4 mb-4 sm:grid-cols-2">
@@ -303,9 +305,22 @@
                         <input type="hidden" name="_method" value="PUT">
                         <div class="grid gap-4 mb-6">
                             <input type="hidden" id="update_waybill_id">
-                            <div>
-                                <label for="waybill_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waybill Number</label>
-                                <input type="text" name="waybill_no" id="update_waybill_no" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Waybill Number"  required="" readonly> 
+                            <div class="grid gap-4 mb-4 sm:grid-cols-3">
+                                <div>
+                                    <label for="waybill_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waybill Number</label>
+                                    <input type="text" name="waybill_no" id="update_waybill_no" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Waybill Number"  required="" readonly> 
+                                </div>
+                                <div>
+                                    <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waybill Type</label>
+                                    <select name="type" id="update_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+                                        <option value="domestic">Domestic</option>
+                                        <option value="international">International</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="van_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Van Number</label>
+                                    <input type="text" name="van_no" id="update_van_no" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Van Number">
+                                </div>
                             </div>
                             
                             <div class="grid gap-4 mb-6 sm:grid-cols-2">
@@ -513,6 +528,8 @@ document.addEventListener('DOMContentLoaded', function() {
         newRow.classList.add("highlight","waybill-row", "border-b", "dark:border-gray-700","highlight"); // Highlight the new row
         newRow.setAttribute("data-id", waybill.id);
         newRow.setAttribute("data-waybill_no", waybill.waybill_no);
+        newRow.setAttribute("data-type", waybill.type);
+        newRow.setAttribute("data-van_no", waybill.van_no);
         newRow.setAttribute("data-consignee_id", waybill.consignee_id);
         newRow.setAttribute("data-consignee_name", waybill.consignee_name);
         newRow.setAttribute("data-consignee_phone", waybill.consignee_phone);
@@ -573,6 +590,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Fetch waybill data from table
             document.getElementById('update_waybill_id').value = waybillId;
             document.getElementById('update_waybill_no').value = row.dataset.waybill_no;
+            document.getElementById('update_type').value = row.dataset.type;
+            document.getElementById('update_van_no').value = row.dataset.van_no;
             document.getElementById('consignee_id').value = row.dataset.consignee_id;
             document.getElementById('update_consignee').value = row.dataset.consignee_name;
             document.getElementById('update_consignee_no').value = row.dataset.consignee_phone;
@@ -632,6 +651,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Fetch waybill data from table
             document.getElementById('update_waybill_id').value = waybillId;
             document.getElementById('update_waybill_no').value = row.dataset.waybill_no;
+            document.getElementById('update_type').value = row.dataset.type;
+            document.getElementById('update_van_no').value = row.dataset.van_no;
             document.getElementById('consignee_id').value = row.dataset.consignee_id;
             document.getElementById('update_consignee').value = row.dataset.consignee_name;
             document.getElementById('update_consignee_no').value = row.dataset.consignee_phone;
@@ -716,6 +737,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 let details = `
                     <strong>Waybill No:</strong> ${this.dataset.waybill_no} <br>
+                    <strong>Van No:</strong> ${this.dataset.van_no} <br>
                     <strong>Shipment:</strong> ${this.dataset.shipment} <br>
                     <strong>Status:</strong> ${this.dataset.status} <br>
                     <strong>Price:</strong> ${this.dataset.price} <br>

@@ -18,6 +18,8 @@ class WaybillFactory extends Factory
     public function definition(): array
     {
         return [
+            'type' => $this->faker->randomElement(['default', 'cebu']),
+            'van_no' => $this->faker->lexify('???????'),
             'consignee_id' => $this->faker->numberBetween(1, 10),
             'shipper_id' => $this->faker->numberBetween(1, 10),
             'shipment' => $this->faker->word . ' - ' . $this->faker->word,

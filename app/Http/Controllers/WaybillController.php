@@ -28,6 +28,8 @@ class WaybillController extends Controller
     {
         $data = $request->validate([
             
+            'type' => 'required|in:default,cebu',
+            'van_no' => 'nullable',
             'consignee_id' => 'required|integer|exists:consignees,id',
             'shipper_id' => 'required|integer|exists:shippers,id',
             'shipment' => 'required',
@@ -47,6 +49,8 @@ class WaybillController extends Controller
                 'waybill' => [
                     'id' => $waybill->id,
                     'waybill_no' => $waybill->waybill_no,
+                    'type' => $waybill->type,
+                    'van_no' => $waybill->van_no,
                     'consignee_id' => $waybill->consignee_id,
                     'consignee_name' => $waybill->consignee->name,  // ✅ Make sure this exists
                     'consignee_phone' => $waybill->consignee->phone_number,
@@ -107,6 +111,8 @@ class WaybillController extends Controller
         // for validation foreign keys must be passed as integers
         $data = $request->validate([
             'waybill_no' => 'required|unique:waybills,waybill_no,' . $waybill->id,
+            'type' => 'required',
+            'van_no' => 'nullable',
             'consignee_id' => 'required|integer|exists:consignees,id',
             'shipper_id' => 'required|integer|exists:shippers,id',
             'shipment' => 'required',

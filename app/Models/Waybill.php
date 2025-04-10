@@ -17,6 +17,8 @@ class Waybill extends Model
     
     protected $fillable =[
         'waybill_no',
+        'type',
+        'van_no',
         'consignee_id',
         'shipper_id',
         'user_id',
@@ -41,15 +43,26 @@ class Waybill extends Model
         parent::boot();
 
         static::creating(function ($waybill) {
-            if (empty($waybill->waybill_no)) {
-                // Get the highest existing waybill number (as integer)
-                $last = Waybill::orderByDesc(DB::raw('CAST(waybill_no AS UNSIGNED)'))
-                               ->value('waybill_no');
-    
-                // Set starting number if none found
-                $next = $last ? ((int) $last) + 1 : 100000;
-    
-                $waybill->waybill_no = (string) $next;
+            // Make sure 'type' is set first
+            if (empty($waybill->waybill_no) && !empty($waybill->type)) {
+                $isCebu = strtolower($waybill->type) === 'cebu';
+
+                // Define prefix and cast strategy
+                if ($isCebu) {
+                    $last = self::where('waybill_no', 'LIKE', 'C%')
+                        ->orderByDesc(DB::raw('CAST(SUBSTRING(waybill_no, 2) AS UNSIGNED)'))
+                        ->value('waybill_no');
+
+                    $number = $last ? ((int) substr($last, 1)) + 1 : 100000;
+                    $waybill->waybill_no = 'C' . $number;
+                } else {
+                    $last = self::where('waybill_no', 'NOT LIKE', 'C%')
+                        ->orderByDesc(DB::raw('CAST(waybill_no AS UNSIGNED)'))
+                        ->value('waybill_no');
+
+                    $number = $last ? ((int) $last) + 1 : 100000;
+                    $waybill->waybill_no = (string) $number;
+                }
             }
         });
 
