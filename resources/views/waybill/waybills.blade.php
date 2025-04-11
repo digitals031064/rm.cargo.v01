@@ -1,50 +1,5 @@
 <x-app-layout>
-    <style>
-        .draggable-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center; 
-            color: white;
-            padding: 10px;
-            cursor: grab;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
 
-        .draggable-header:active {
-            cursor: grabbing;
-        }
-        .highlight {
-            @apply bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold shadow-md transition-all;
-            border-left: 4px solid #10b981; /* Green accent */
-        }
-
-        /* Dark mode support using media query */
-        @media (prefers-color-scheme: dark) {
-            .highlight {
-                background-color: #374151; /* Tailwind gray-700 */
-                color: white;
-            }
-        }
-        .highlight th {
-            color: #0f172a; /* Tailwind slate-900 for dark, defined text */
-            dark:text-white; /* Maintain white text in dark mode */
-            font-weight: 700; /* Extra bold for headers */
-        }
-
-        .tooltip {
-            position: absolute;
-            display: block;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px;
-            border-radius: 5px;
-            font-size: 12px;
-            white-space: nowrap;
-            pointer-events: none;
-        }
-
-    </style>
     <div class="py-12">
         <!-- Start block -->
         <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
@@ -56,6 +11,14 @@
                     </div>
                 @endif
 
+                <div id="globalLoader" class="fixed inset-0 z-[100] bg-black bg-opacity-50 flex justify-center items-center hidden">
+
+                    <div class="w-[384px] h-[38px] bg-gray-200 dark:bg-gray-700 overflow-hidden rounded relative">
+                        <div id="progressBar" class="h-full bg-blue-600 dark:bg-blue-400"></div>
+                        <span id="progressText" class="absolute inset-0 flex justify-center items-center  font-minecraft">Fetching...</span>
+                    </div>
+                
+                </div>
 
                 <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                     <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
@@ -92,6 +55,7 @@
                                 <tr>
                                     <th scope="col" class="px-4 py-4">Waybill Number</th>
                                     <th scope="col" class="px-4 py-3">Consignee</th>
+                                    <th scope="col" class="px-4 py-3">Shipment</th>
                                     <th scope="col" class="px-4 py-3">Price</th>
                                     <th scope="col" class="px-4 py-3">Status</th>
                                     <th scope="col" class="px-4 py-3">Action</th>
@@ -114,10 +78,13 @@
                                     data-cbm="{{$waybill->cbm}}"
                                     data-price="{{$waybill->price}}"
                                     data-status="{{$waybill->status}}"
+                                    data-location_id="{{$waybill->location->location_id}}"
+                                    data-location_name="{{$waybill->location->name}}"
                                     class="waybill-row border-b dark:border-gray-700 {{ $loop->first ? 'highlight' : '' }}"
                                 >
                                     <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$waybill->waybill_no}}</th>
                                     <td class="px-4 py-3">{{$waybill->consignee->name}}</td>
+                                    <td class="px-4 py-3">{{$waybill->shipment}}</td>
                                     <td class="px-4 py-3">PHP{{$waybill->price}}</td>
                                     <td class="px-4 py-3">{{$waybill->status}}</td>
                                     <td class="px-4 py-3 flex items-center justify-end">
@@ -147,7 +114,7 @@
         </section>
                     <!-- End block -->
         <!-- Create modal -->
-        <div id="createWaybillModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div id="createWaybillModal" tabindex="-1" aria-hidden="true" class="z-50 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative p-4 w-full max-w-2xl max-h-full">
                 <!-- Modal content -->
                 <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
@@ -170,6 +137,7 @@
                         <div>
                                 <label for="waybill_no" class="form-field block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waybill Number</label>
                                 <input  type="text" name="waybill_no" id="waybill_no" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Waybill Number" required=""> 
+                                
                         </div>
                         <div class="grid gap-4 mb-4 sm:grid-cols-2">
                             <!-- Consignee --> 
@@ -277,7 +245,8 @@
                             <input type="hidden" id="update_waybill_id">
                             <div>
                                 <label for="waybill_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waybill Number</label>
-                                <input type="text" name="waybill_no" id="update_waybill_no" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Waybill Number"  required=""> 
+                                <input type="text" readonly disabled name="waybill_no" id="update_waybill_no" 
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Waybill Number"  required=""> 
                             </div>
                             
                             <div class="grid gap-4 mb-6 sm:grid-cols-2">
@@ -408,9 +377,16 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 
+    const loader = document.getElementById('globalLoader');
+    const progressBar = document.getElementById('progressBar');  // Inner progress bar
+    let progress = 0;  // Initial progress
+    const interval = 50;  // Update every 50ms
+    const maxProgress = 100;  // Max progress (100%)
+
     let addNewItem = null; // Store reference to the "Add new consignee" div
 
     const updateWaybillModal = document.getElementById('updateWaybillModal');
+    const locationPicker = document.getElementById('location-picker');
     const flowbiteUpdateModal = new Modal(updateWaybillModal);
 
     //document.getElementById("#waybill-table tr:first-child").classlist.add('highlight');
@@ -422,18 +398,53 @@ document.addEventListener('DOMContentLoaded', function() {
     */
     const openModalButton = document.getElementById("createWaybillModalButton");
     const addForm = document.getElementById("addWaybilLForm");
+    const locationSelect = document.getElementById('location-picker'); // Location select field
+    const waybillInput = document.getElementById('waybill_no'); // Waybill input field
+
     openModalButton.addEventListener("click", function (event) {
+        progress=0;
+        const progressInterval = setInterval(() => {
+
+            progressText.innerText = `Fetching... ${progress}%`;  // Update the text to show progress
+            progress += 2;  // Increment progress by 2% (or adjust as needed)
+            if (progress >= maxProgress) {
+                clearInterval(progressInterval);  // Stop when it reaches 100%
+            }
+            progressBar.style.width = `${progress}%`;  // Update the width of the progress bar
+        }, interval);
+
         addForm.reset();
         document.querySelectorAll('.waybill-row').forEach(row => {
             row.classList.remove('highlight');
         });
+
+        const locationId = locationSelect.value;
+    
+        if (locationId) {
+            // Fetch the next waybill number based on the selected location
+            loader.classList.remove('hidden'); //show loader
+            fetchNextWaybillNumber(locationId).then(nextWaybillNo => {
+            if (nextWaybillNo) {
+                
+                //loader.classList.add('hidden');
+                clearInterval(progressInterval);  // Stop progress when fetch is done
+                progressBar.style.width = '100%';  // Ensure the progress bar reaches 100%
+                progressText.innerText = 'Fetch Complete!';  // Change the text when done
+                loader.classList.add('hidden');  // Hide the loader when done
+                waybillInput.value = nextWaybillNo;
+
+                }
+            });
+        }
+
     });
 
     addForm.addEventListener("submit", function (event) {
         event.preventDefault(); // Prevent page reload
+        loader.classList.remove('hidden'); // show loader
 
         const formData = new FormData(this);
-
+        formData.append('location_id', locationPicker.value); // replace with the actual value Apr 11 2025
         fetch('/waybills', {
             method: 'POST',
             body: formData,
@@ -453,6 +464,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Clear the form
                 addForm.reset();
+                loader.classList.add('hidden');
                 window.location.reload();
             } else {
                 alert('Failed to create waybill. Please try again.');
@@ -672,6 +684,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 let details = `
                     <strong>Waybill No:</strong> ${this.dataset.waybill_no} <br>
+                    <strong>Origin:</strong> ${this.dataset.location_name} <br>
                     <strong>Shipment:</strong> ${this.dataset.shipment} <br>
                     <strong>Status:</strong> ${this.dataset.status} <br>
                     <strong>Price:</strong> ${this.dataset.price} <br>
@@ -1106,17 +1119,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 } else {
                     // Create "Add New Consignee" button
-                    addNewItem = document.createElement('div');
-                    addNewItem.classList.add('p-2', 'text-blue-600', 'cursor-pointer', 'hover:bg-gray-100');
+                    const addNewItem = document.createElement('button');
+                    addNewItem.type = 'button'; // Prevents form submission if inside a form
+                    addNewItem.classList.add(
+                        'p-2',
+                        'text-blue-600',
+                        'cursor-pointer',
+                        'hover:bg-gray-100',
+                        'w-full',
+                        'text-left',
+                        'bg-white',
+                        'border-none',
+                        'focus:outline-none'
+                    );
                     addNewItem.textContent = `Add new consignee: ${query}`;
 
                     // Handle click event to show the add consignee form
-                    addNewItem.addEventListener('click', function() {
+                    addNewItem.addEventListener('click', function () {
                         consigneeList.classList.add('hidden'); // Hide dropdown list
                         document.getElementById("consigneePhone").value = '';
                         document.getElementById("billingAddress").value = '';
                         addNewConsignee(query);
-                        
                     });
 
                     
@@ -1230,4 +1253,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<script src="{{ asset('js/location.js') }}"></script>
+<script src="{{ asset('js/waybill.js') }}"></script>
 </x-app-layout>

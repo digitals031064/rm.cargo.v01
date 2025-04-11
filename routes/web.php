@@ -8,6 +8,7 @@ use App\Http\Controllers\ShipperController;
 use App\Http\Controllers\WaybillController;
 use App\Http\Controllers\ConsigneeController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\LocationWaybillController;
 
 Route::get('/', function () {
     return view('index');
@@ -34,6 +35,9 @@ Route::get('/waybills/{waybill}/edit', [WaybillController::class, 'edit'])->midd
 Route::get('waybill/waybills/{id}', [WaybillController::class, 'show'])->middleware(['auth', 'verified'])->name('waybills.show');
 Route::put('/waybills/{waybill}/update', [WaybillController::class, 'update'])->middleware(['auth', 'verified'])->name('waybills.update');
 Route::get('/tracking/track', [ActivityLogController::class, 'track'])->name('logs.track');
+
+
+Route::get('/locations/next-waybill/{locationId}', [LocationWaybillController::class, 'getNextWaybillNumber']);
 
 
 Route::get('/waybill/waybills', function () {

@@ -14,6 +14,8 @@
         <!-- Styles / Scripts -->
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link rel="stylesheet" href="{{ asset('css/waybill.css') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
         </head>
     <body class="font-sans antialiased">

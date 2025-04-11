@@ -15,7 +15,7 @@ class WaybillController extends Controller
 {
     public function index()
     {
-        $waybills = Waybill::with(['consignee', 'shipper'])->get();
+        $waybills = Waybill::with(['consignee', 'shipper','location'])->get();
         return view('waybills', compact('waybills'));
     }
 
@@ -30,6 +30,7 @@ class WaybillController extends Controller
             'waybill_no' => 'required|unique:waybills,waybill_no',
             'consignee_id' => 'required|integer|exists:consignees,id',
             'shipper_id' => 'required|integer|exists:shippers,id',
+            'location_id' => 'required|integer|exists:locations,id',
             'shipment' => 'required',
             'cbm' => 'required|numeric|min:0',
             'price' => 'required|numeric|max:999999.99',

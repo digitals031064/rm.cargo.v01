@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Location;
 use App\Models\ActivityLog;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Waybill extends Model
@@ -14,6 +16,7 @@ class Waybill extends Model
         'waybill_no',
         'consignee_id',
         'shipper_id',
+        'location_id',
         'user_id',
         'shipment',
         'price',
@@ -21,12 +24,16 @@ class Waybill extends Model
         'status'
     ];
 
-    public function consignee() {
+    public function consignee(): BelongsTo {
         return $this->belongsTo(Consignee::class);
     }
 
-    public function shipper() {
+    public function shipper(): BelongsTo {
         return $this->belongsTo(Shipper::class);
+    }
+
+    public function location(): BelongsTo{
+        return $this->belongsTo(Location::class);
     }
 
     protected static function boot()

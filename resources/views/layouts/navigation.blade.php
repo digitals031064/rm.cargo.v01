@@ -26,6 +26,20 @@
                         {{ __('User Management') }}
                     </x-nav-link>
                 </div>
+
+                <!-- Location Picker -->
+                <div class="ml-4 flex items-center space-x-4">
+                    <label for="location-picker" class="text-sm font-medium text-gray-900 dark:text-white">Location:</label>
+                    <select id="location-picker" name="location" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <option value="">--Choose Your Location--</option>                        
+                        @foreach($locations as $location)
+                            <option value="{{ $location->id }}" {{ session('location_id') == $location->id ? 'selected' : '' }}>
+                                {{ $location->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
             </div>
 
             <!-- Settings Dropdown -->

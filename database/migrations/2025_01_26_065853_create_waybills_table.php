@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('consignee_id')->constrained()->onDelete('cascade');
             $table->foreignId('shipper_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('location_id')->constrained();
             $table->string('shipment');
             $table->decimal('cbm')->nullable();
             $table->decimal('price', 12, 2);

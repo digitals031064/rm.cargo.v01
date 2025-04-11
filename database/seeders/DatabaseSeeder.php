@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\WaybillSeeder;
+use Database\Seeders\LocationSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,6 +22,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'jcjr031064',
             'email' => 'jcjr031064@yahoo.com',
             'password' => bcrypt('Cfkak7cv'),
+        ]);
+
+        $this->call([
+            LocationSeeder::class,
         ]);
 
         $this->call([
