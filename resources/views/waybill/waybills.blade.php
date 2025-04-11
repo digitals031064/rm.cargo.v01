@@ -1322,25 +1322,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const modalButton = document.getElementById('createWaybillModalButton');
     const previewSpan = document.getElementById('preview-waybill-no');
+    const typeSelect = document.querySelector('select[name="type"]'); // dropdown selector
 
-    modalButton.addEventListener('click', function () {
-        console.log("Modal button clicked"); // 🔍 Debug
+    function fetchNextWaybillNo(type) {
+        console.log("Fetching next number for type:", type); // 🔍 Debug
 
         previewSpan.textContent = 'Loading...';
 
-        fetch('/waybills/next-number')
-            .then(res => res.json())
-            .then(data => {
-                console.log("Fetched data:", data); // 🔍 Debug
-                previewSpan.textContent = data.next_waybill_no;
-            })
-             .catch(error => {
-                console.error("Error fetching next number:", error);
-                previewSpan.textContent = 'Error';
-            });
+        fetch(`/waybills/next-number?type=${type}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log("Fetched data:", data); // 🔍 Debug
+            previewSpan.textContent = data.next_waybill_no;
+        })
+        .catch(error => {
+            console.error("Error fetching next number:", error);
+            previewSpan.textContent = 'Error';
         });
+    }
 
-        const table = document.getElementById("wb-table");
+    // When modal button is clicked
+    modalButton.addEventListener('click', function () {
+        const selectedType = typeSelect.value;
+        fetchNextWaybillNo(selectedType);
+    });
+    // When dropdown value changes
+    typeSelect.addEventListener('change', function () {
+        fetchNextWaybillNo(this.value);
+    });
+
+    const table = document.getElementById("wb-table");
     if (!table) return;
 
     const headers = table.querySelectorAll("thead th");

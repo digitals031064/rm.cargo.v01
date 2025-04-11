@@ -94,12 +94,28 @@ class WaybillController extends Controller
         return response()->json($waybill);
     }
  
-    public function getNextWaybillNo() {
-        $last = DB::table('waybills')
-            ->orderByDesc(DB::raw('CAST(waybill_no AS UNSIGNED)'))
-            ->value('waybill_no');
+    public function getNextWaybillNo(Request $request){
 
-        $next = $last ? ((int) $last) + 1 : 100000;
+        $type = $request->query('type', 'default'); // default to 'domestic'
+
+        if ($type === 'cebu') {
+            // Get last international waybill starting with 'C'
+            $last = DB::table('waybills')
+                ->where('waybill_no', 'LIKE', 'C%')
+                ->orderByDesc(DB::raw('CAST(SUBSTRING(waybill_no, 2) AS UNSIGNED)'))
+                ->value('waybill_no');
+
+            $number = $last ? ((int) substr($last, 1)) + 1 : 100000;
+            $next = 'C' . $number;
+        } else {
+            // Domestic waybill (plain number)
+            $last = DB::table('waybills')
+                ->where('waybill_no', 'NOT LIKE', 'C%')
+                ->orderByDesc(DB::raw('CAST(waybill_no AS UNSIGNED)'))
+                ->value('waybill_no');
+
+            $next = $last ? ((int) $last) + 1 : 100000;
+        }
 
         return response()->json(['next_waybill_no' => (string) $next]);
     }
