@@ -60,7 +60,7 @@ class Waybill extends Model
                         ->orderByDesc(DB::raw('CAST(waybill_no AS UNSIGNED)'))
                         ->value('waybill_no');
 
-                    $number = $last ? ((int) $last) + 1 : 100000;
+                    $number = $last ? ((int) $last) + 1 : 500000;
                     $waybill->waybill_no = (string) $number;
                 }
             }
