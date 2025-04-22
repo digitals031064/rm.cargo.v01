@@ -45,7 +45,8 @@ class Waybill extends Model
 
         static::creating(function ($waybill) {
             if (empty($waybill->waybill_no)) {
-                $user = Auth::user(); // Get the currently authenticated user
+                // Try to resolve the related user from the user_id
+                $user = $waybill->user ?? User::find($waybill->user_id);
         
                 if (!$user || empty($user->office)) {
                     throw new \Exception('Unable to generate waybill number: user or office not available.');
@@ -54,7 +55,6 @@ class Waybill extends Model
                 $office = strtoupper($user->office);
         
                 if ($office === 'CEB') {
-                    // Waybill starts with 'C'
                     $last = self::where('waybill_no', 'LIKE', 'C%')
                         ->orderByDesc(DB::raw('CAST(SUBSTRING(waybill_no, 2) AS UNSIGNED)'))
                         ->value('waybill_no');
@@ -63,7 +63,6 @@ class Waybill extends Model
                     $waybill->waybill_no = 'C' . $number;
         
                 } elseif ($office === 'ZAM') {
-                    // Waybill starts with 'B'
                     $last = self::where('waybill_no', 'LIKE', 'B%')
                         ->orderByDesc(DB::raw('CAST(SUBSTRING(waybill_no, 2) AS UNSIGNED)'))
                         ->value('waybill_no');
@@ -72,7 +71,6 @@ class Waybill extends Model
                     $waybill->waybill_no = 'B' . $number;
         
                 } else {
-                    // Default numeric waybill for MNL and others
                     $last = self::where('waybill_no', 'NOT LIKE', 'C%')
                         ->where('waybill_no', 'NOT LIKE', 'B%')
                         ->orderByDesc(DB::raw('CAST(waybill_no AS UNSIGNED)'))
@@ -83,6 +81,7 @@ class Waybill extends Model
                 }
             }
         });
+        
 
         // Log creation event
         static::created(function ($waybill) {
