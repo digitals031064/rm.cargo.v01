@@ -31,7 +31,7 @@
                                         <span class="sr-only">Close modal</span>
                                     </button>
                                 </div>
-                                <div class="p-4 md:p-5">
+                                <div class="px-4">
                                     <form class="space-y-4" action="{{route('staff-account.store')}}" method="POST">
                                         @csrf
                                         <div class="columns-2">
@@ -44,9 +44,19 @@
                                                 <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
                                             </div>
                                         </div>
-                                        <div>
-                                            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                            <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required required minlength="8" />
+                                        <div class="columns-2">
+                                            <div>
+                                                <label for="office" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Office</label>
+                                                <select name="office" id="office" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                                    <option value="ZAM">ZAM</option>
+                                                    <option value="CEB">CEB</option>
+                                                    <option value="MNL">MNL</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                                                <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required required minlength="8" />
+                                            </div>
                                         </div>
                                         <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                                             <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add User</button>
@@ -63,14 +73,36 @@
                                 <th scope="col" class="px-4 py-4">Name</th>
                                 <th scope="col" class="px-4 py-3">Email</th>
                                 <th scope="col" class="px-4 py-3">User Type</th>
+                                <th scope="col" class="px-4 py-3">Office</th>
+                                <th scope="col" class="px-4 py-3">Action</th>
                             </tr>
                         </thead>
+                        @if(session('success'))
+                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                                <strong class="font-bold">Success!</strong>
+                                <span class="block sm:inline">{{ session('success') }}</span>
+                            </div>
+                        @endif
                         <tbody>
                             @foreach ($users as $user)
                             <tr class="border-b">
-                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{{$user->name}}</th>
-                                <td class="px-4 py-3">{{$user->email}}</td>
-                                <td class="px-4 py-3">{{$user->usertype}}</td>
+                                <form method="POST" action="{{ route('user.updateOffice', $user->id) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{{$user->name}}</th>
+                                    <td class="px-4 py-3">{{$user->email}}</td>
+                                    <td class="px-4 py-3">{{$user->usertype}}</td>
+                                    <td class="px-4 py-3">
+                                        <select name="office" class="border border-gray-300 rounded px-2 py-1">
+                                            @foreach (['ZAM', 'CEB', 'MNL'] as $office)
+                                            <option value="{{ $office }}" {{ $user->office === $office ? 'selected' : '' }}>
+                                                    {{$office}}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td class="px-4 py-3"><button type="submit" class="font-medium text-blue-600 hover:underline">Update</button></td>
+                                </form>
                             </tr>
                                 
                             @endforeach

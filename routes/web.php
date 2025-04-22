@@ -90,6 +90,7 @@ Route::get('/waybills/search', [WaybillController::class, 'search'])->name('wayb
 
 Route::get('admin/user-management', [ActivityLogController::class, 'index'])->middleware(['auth', 'verified'])->name('user-management');
 Route::post('admin/user-management', [StaffAccountController::class, 'store'])->name('staff-account.store');
+Route::patch('/admin/user-management/{user}/office', [ProfileController::class, 'updateOffice'])->name('user.updateOffice');
 
     // Consignee autocomplete
 Route::get('/consignees/search', [WaybillController::class, 'searchConsignees']);

@@ -104,7 +104,6 @@
                                 <tr                                             
                                     data-id="{{$waybill->id}}"
                                     data-waybill_no="{{$waybill->waybill_no}}"
-                                    data-type="{{$waybill->type}}"
                                     data-van_no="{{$waybill->van_no}}"
                                     data-consignee_id="{{$waybill->consignee->id}}"
                                     data-consignee_name="{{$waybill->consignee->name}}"
@@ -173,20 +172,20 @@
                         @csrf
                         @method('POST')
                         <!-- Waybill -->
-                        <div class="grid gap-4 mb-4 sm:grid-cols-3">
+                        <div class="grid gap-4 mb-4 sm:grid-cols-2">
                             <div>
                                 <div class="mb-2"></div>
                                 <p class="text-sm text-gray-500 dark:text-white p-4">
                                     Waybill No: <span id="preview-waybill-no" class="font-semibold text-xl">Loading...</span>
                                 </p>
                             </div>
-                            <div>
+                            {{-- <div>
                                 <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waybill Type</label>
                                 <select name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                     <option value="default">Manila</option>
                                     <option value="cebu">Cebu</option>
                                 </select>
-                            </div>
+                            </div> --}}
                             <div>
                                 <label for="van_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Van Number</label>
                                 <input type="text" name="van_no" id="van_no" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Van Number">
@@ -305,18 +304,18 @@
                         <input type="hidden" name="_method" value="PUT">
                         <div class="grid gap-4 mb-6">
                             <input type="hidden" id="update_waybill_id">
-                            <div class="grid gap-4 mb-4 sm:grid-cols-3">
+                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
                                     <label for="waybill_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waybill Number</label>
                                     <input type="text" name="waybill_no" id="update_waybill_no" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Waybill Number"  required="" readonly> 
                                 </div>
-                                <div>
+                                {{-- <div>
                                     <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waybill Type</label>
                                     <select name="type" id="update_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                         <option value="default">Manila</option>
                                         <option value="cebu">Cebu</option>
                                     </select>
-                                </div>
+                                </div> --}}
                                 <div>
                                     <label for="van_no" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Van Number</label>
                                     <input type="text" name="van_no" id="update_van_no" class="form-field bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Van Number">
@@ -590,7 +589,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Fetch waybill data from table
             document.getElementById('update_waybill_id').value = waybillId;
             document.getElementById('update_waybill_no').value = row.dataset.waybill_no;
-            document.getElementById('update_type').value = row.dataset.type;
             document.getElementById('update_van_no').value = row.dataset.van_no;
             document.getElementById('consignee_id').value = row.dataset.consignee_id;
             document.getElementById('update_consignee').value = row.dataset.consignee_name;
@@ -651,7 +649,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Fetch waybill data from table
             document.getElementById('update_waybill_id').value = waybillId;
             document.getElementById('update_waybill_no').value = row.dataset.waybill_no;
-            document.getElementById('update_type').value = row.dataset.type;
             document.getElementById('update_van_no').value = row.dataset.van_no;
             document.getElementById('consignee_id').value = row.dataset.consignee_id;
             document.getElementById('update_consignee').value = row.dataset.consignee_name;
@@ -1322,33 +1319,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const modalButton = document.getElementById('createWaybillModalButton');
     const previewSpan = document.getElementById('preview-waybill-no');
-    const typeSelect = document.querySelector('select[name="type"]'); // dropdown selector
-
-    function fetchNextWaybillNo(type) {
-        console.log("Fetching next number for type:", type); // 🔍 Debug
-
+    
+    modalButton.addEventListener('click', function () {
+        
         previewSpan.textContent = 'Loading...';
 
-        fetch(`/waybills/next-number?type=${type}`)
-        .then(res => res.json())
-        .then(data => {
-            console.log("Fetched data:", data); // 🔍 Debug
-            previewSpan.textContent = data.next_waybill_no;
-        })
-        .catch(error => {
-            console.error("Error fetching next number:", error);
-            previewSpan.textContent = 'Error';
-        });
-    }
-
-    // When modal button is clicked
-    modalButton.addEventListener('click', function () {
-        const selectedType = typeSelect.value;
-        fetchNextWaybillNo(selectedType);
-    });
-    // When dropdown value changes
-    typeSelect.addEventListener('change', function () {
-        fetchNextWaybillNo(this.value);
+        fetch('/waybills/next-number')
+            .then(response => response.json())
+            .then(data => {
+                if (data.next_waybill_no) {
+                    previewSpan.textContent = data.next_waybill_no;
+                } else {
+                    previewSpan.textContent = 'Unavailable';
+                }
+            })
+            .catch(() => {
+                previewSpan.textContent = 'Error fetching number';
+            });
     });
 
     const table = document.getElementById("wb-table");

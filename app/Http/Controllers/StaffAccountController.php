@@ -18,12 +18,14 @@ class StaffAccountController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'office' => ['required', 'string'],
             'password' => ['required', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'office' => $request->office,
             'password' => Hash::make($request->password),
         ]);
 

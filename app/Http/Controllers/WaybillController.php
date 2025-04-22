@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Waybill;
 use App\Models\Shipper;
@@ -28,7 +28,6 @@ class WaybillController extends Controller
     {
         $data = $request->validate([
             
-            'type' => 'required|in:default,cebu',
             'van_no' => 'nullable',
             'consignee_id' => 'required|integer|exists:consignees,id',
             'shipper_id' => 'required|integer|exists:shippers,id',
@@ -49,7 +48,6 @@ class WaybillController extends Controller
                 'waybill' => [
                     'id' => $waybill->id,
                     'waybill_no' => $waybill->waybill_no,
-                    'type' => $waybill->type,
                     'van_no' => $waybill->van_no,
                     'consignee_id' => $waybill->consignee_id,
                     'consignee_name' => $waybill->consignee->name,  // ✅ Make sure this exists
@@ -95,11 +93,16 @@ class WaybillController extends Controller
     }
  
     public function getNextWaybillNo(Request $request){
+        $user = Auth::user();
 
-        $type = $request->query('type', 'default'); // default to 'domestic'
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
 
-        if ($type === 'cebu') {
-            // Get last international waybill starting with 'C'
+        $office = $user->office;
+
+        if ($office === 'CEB') {
+            // CEB users: waybill starts with 'C'
             $last = DB::table('waybills')
                 ->where('waybill_no', 'LIKE', 'C%')
                 ->orderByDesc(DB::raw('CAST(SUBSTRING(waybill_no, 2) AS UNSIGNED)'))
@@ -107,10 +110,22 @@ class WaybillController extends Controller
 
             $number = $last ? ((int) substr($last, 1)) + 1 : 100000;
             $next = 'C' . $number;
+
+        } elseif ($office === 'ZAM') {
+            // ZAM users: waybill starts with 'B'
+            $last = DB::table('waybills')
+                ->where('waybill_no', 'LIKE', 'B%')
+                ->orderByDesc(DB::raw('CAST(SUBSTRING(waybill_no, 2) AS UNSIGNED)'))
+                ->value('waybill_no');
+
+            $number = $last ? ((int) substr($last, 1)) + 1 : 100000;
+            $next = 'B' . $number;
+
         } else {
-            // Domestic waybill (plain number)
+            // All others (e.g., MNL): plain numeric waybill
             $last = DB::table('waybills')
                 ->where('waybill_no', 'NOT LIKE', 'C%')
+                ->where('waybill_no', 'NOT LIKE', 'B%')
                 ->orderByDesc(DB::raw('CAST(waybill_no AS UNSIGNED)'))
                 ->value('waybill_no');
 
@@ -127,7 +142,6 @@ class WaybillController extends Controller
         // for validation foreign keys must be passed as integers
         $data = $request->validate([
             'waybill_no' => 'required|unique:waybills,waybill_no,' . $waybill->id,
-            'type' => 'required',
             'van_no' => 'nullable',
             'consignee_id' => 'required|integer|exists:consignees,id',
             'shipper_id' => 'required|integer|exists:shippers,id',

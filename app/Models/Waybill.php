@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ActivityLog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,23 +44,40 @@ class Waybill extends Model
         parent::boot();
 
         static::creating(function ($waybill) {
-            // Make sure 'type' is set first
-            if (empty($waybill->waybill_no) && !empty($waybill->type)) {
-                $isCebu = strtolower($waybill->type) === 'cebu';
-
-                // Define prefix and cast strategy
-                if ($isCebu) {
+            if (empty($waybill->waybill_no)) {
+                $user = Auth::user(); // Get the currently authenticated user
+        
+                if (!$user || empty($user->office)) {
+                    throw new \Exception('Unable to generate waybill number: user or office not available.');
+                }
+        
+                $office = strtoupper($user->office);
+        
+                if ($office === 'CEB') {
+                    // Waybill starts with 'C'
                     $last = self::where('waybill_no', 'LIKE', 'C%')
                         ->orderByDesc(DB::raw('CAST(SUBSTRING(waybill_no, 2) AS UNSIGNED)'))
                         ->value('waybill_no');
-
+        
                     $number = $last ? ((int) substr($last, 1)) + 1 : 100000;
                     $waybill->waybill_no = 'C' . $number;
+        
+                } elseif ($office === 'ZAM') {
+                    // Waybill starts with 'B'
+                    $last = self::where('waybill_no', 'LIKE', 'B%')
+                        ->orderByDesc(DB::raw('CAST(SUBSTRING(waybill_no, 2) AS UNSIGNED)'))
+                        ->value('waybill_no');
+        
+                    $number = $last ? ((int) substr($last, 1)) + 1 : 100000;
+                    $waybill->waybill_no = 'B' . $number;
+        
                 } else {
+                    // Default numeric waybill for MNL and others
                     $last = self::where('waybill_no', 'NOT LIKE', 'C%')
+                        ->where('waybill_no', 'NOT LIKE', 'B%')
                         ->orderByDesc(DB::raw('CAST(waybill_no AS UNSIGNED)'))
                         ->value('waybill_no');
-
+        
                     $number = $last ? ((int) $last) + 1 : 500000;
                     $waybill->waybill_no = (string) $number;
                 }

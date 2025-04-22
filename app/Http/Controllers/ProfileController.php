@@ -96,6 +96,19 @@ class ProfileController extends Controller
         $waybill->status = $request->status;
         $waybill->save();
 
-        return back()->with('success', 'Waybill status updated successfully.');
+        return back()->with('success', "Waybill #{$waybill->waybill_no}'s waybill status has been updated to {$waybill->status} successfully.");
+    }
+
+    public function updateOffice(Request $request, User $user){
+
+        $request->validate([
+            'office' => 'required|string|in:CEB,MNL,ZAM'
+        ]);
+
+        $user->office = $request->office;
+        $user->save();
+
+        return back()->with('success', "User office updated successfully for {$user->name}");
+        
     }
 }
