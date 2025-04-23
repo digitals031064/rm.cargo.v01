@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('waybills', function (Blueprint $table) {
             $table->id();
             $table->string('waybill_no')->unique()->nullable();
-            $table->string('type')->nullable();
+            $table->string('office')->nullable();
             $table->string('van_no')->nullable();
             $table->foreignId('consignee_id')->constrained()->onDelete('cascade');
             $table->foreignId('shipper_id')->constrained()->onDelete('cascade');

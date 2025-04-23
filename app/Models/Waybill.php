@@ -18,7 +18,7 @@ class Waybill extends Model
     
     protected $fillable =[
         'waybill_no',
-        'type',
+        'office',
         'van_no',
         'consignee_id',
         'shipper_id',

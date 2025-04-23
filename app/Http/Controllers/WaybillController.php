@@ -26,6 +26,7 @@ class WaybillController extends Controller
 
     public function store(Request $request)
     {
+        $user = Auth::user();
         $data = $request->validate([
             
             'van_no' => 'nullable',
@@ -39,6 +40,7 @@ class WaybillController extends Controller
             'status' => 'required',
         ]);
         $data['user_id'] = auth()->id();
+        $data['office'] = $user->office;
 
         $waybill = Waybill::create($data);
 
@@ -48,6 +50,7 @@ class WaybillController extends Controller
                 'waybill' => [
                     'id' => $waybill->id,
                     'waybill_no' => $waybill->waybill_no,
+                    'office' =>$user->office,
                     'van_no' => $waybill->van_no,
                     'consignee_id' => $waybill->consignee_id,
                     'consignee_name' => $waybill->consignee->name,  // ✅ Make sure this exists
