@@ -21,6 +21,7 @@ class WaybillSeeder extends Seeder
         User::all()->each(function ($user) {
             Waybill::factory(10)->create([
                 'user_id' => $user->id,  // Use the current user's ID instead of hardcoding 1
+                'office' => $user->office,
             ]);
         });
 

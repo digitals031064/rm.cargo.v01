@@ -92,6 +92,7 @@
                                 <tr>
                                     <th scope="col" class="px-4 py-4">
                                             Waybill Number
+                                            <span class="inline-block ml-1">⇅</span>
                                     </th>
                                     <th scope="col" class="px-4 py-3">Consignee<span class="inline-block ml-1">⇅</span></th>
                                     <th scope="col" class="px-4 py-3">Price<span class="inline-block ml-1">⇅</span></th>

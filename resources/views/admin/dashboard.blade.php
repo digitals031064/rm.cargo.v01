@@ -93,6 +93,9 @@
                             <thead class="text-xs text-gray-700 uppercase bg-blue-300">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
+                                        Office
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         Full Name
                                     </th>
                                     <th scope="col" class="px-6 py-3">
@@ -107,8 +110,11 @@
                                 @foreach ($users as $user)
                                 <tr class="odd:bg-white even:bg-gray-50 border-b border-gray-200">
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                        {{$user->name}}
+                                        {{$user->office}}
                                     </th>
+                                    <td class="px-6 py-4">
+                                        {{$user->name}}
+                                    </td>
                                     <td class="px-6 py-4">
                                         {{$user->email}}
                                     </td>

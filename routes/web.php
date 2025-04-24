@@ -13,6 +13,7 @@ use App\Http\Controllers\StaffAccountController;
 use Vonage\Client;
 use Vonage\Client\Credentials\Basic;
 use Vonage\SMS\Message\SMS;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('index');
@@ -53,12 +54,18 @@ Route::get('/waybill/waybills', function () {
         'Delivered'
     ];
 
+    $user = Auth::user();
     $search = request()->query('search');
-    $query = Waybill::with(['consignee', 'shipper'])->orderBy('created_at', 'desc');;
+    $query = Waybill::with(['consignee', 'shipper'])->orderBy('created_at', 'desc');
+
+    if ($user->usertype !== 'admin' && $user->office !== 'ZAM') {
+        $query->where('office', $user->office);
+    }
 
     if (!empty($search)) {
         $query->where(function ($q) use ($search) {
             $q->where('waybill_no', 'like', "%$search%")
+                ->orWhere('van_no', 'like', "%$search%")
                 ->orWhere('shipment', 'like', "%$search%")
                 ->orWhere('status', 'like', "%$search%")
                 ->orWhere('price', 'like', "%$search%")

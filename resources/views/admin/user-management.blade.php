@@ -93,7 +93,7 @@
                                     <td class="px-4 py-3">{{$user->email}}</td>
                                     <td class="px-4 py-3">{{$user->usertype}}</td>
                                     <td class="px-4 py-3">
-                                        <select name="office" class="border border-gray-300 rounded px-2 py-1">
+                                        <select name="office" class="border border-gray-300 rounded-xl px-2 py-1">
                                             @foreach (['ZAM', 'CEB', 'MNL'] as $office)
                                             <option value="{{ $office }}" {{ $user->office === $office ? 'selected' : '' }}>
                                                     {{$office}}
@@ -109,11 +109,12 @@
                         </tbody>
                     </table>
                     {{ $users->links('pagination::tailwind') }}
-                    <table class="w-full text-sm text-left text-gray-500">
+                    <table class="w-full text-sm text-left text-gray-500 my-4">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
-                                <th scope="col" class="px-4 py-4">Waybill Number</th>
                                 <th scope="col" class="px-4 py-3">User</th>
+                                <th scope="col" class="px-4 py-3">Office</th>
+                                <th scope="col" class="px-4 py-4">Waybill Number</th>
                                 <th scope="col" class="px-4 py-3">Status</th>
                                 <th scope="col" class="px-4 py-3">Action</th>
                                 <th scope="col" class="px-4 py-3">Time</th>
@@ -122,8 +123,9 @@
                         <tbody>
                             @foreach ($logs as $log)
                             <tr class="border-b">
-                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{{$log->waybill->waybill_no}}</th>
-                                <td class="px-4 py-3">{{$log->user->name}}</td>
+                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{{$log->user->name}}</th>
+                                <td class="px-4 py-3">{{$log->user->office}}</td>
+                                <td class="px-4 py-3">{{$log->waybill->waybill_no}}</td>
                                 <td class="px-4 py-3">{{$log->status}}</td>
                                 <td class="px-4 py-3">{{$log->action}}</td>
                                 <td class="px-4 py-3">{{$log->updated_at}}</td>

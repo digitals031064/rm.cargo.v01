@@ -29,6 +29,6 @@ class StaffAccountController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect(route('user-management', absolute: false));
+        return redirect(route('user-management', absolute: false))->with('success', "{$user->office} user account for {$user->name} successfully created!");
     }
 }
